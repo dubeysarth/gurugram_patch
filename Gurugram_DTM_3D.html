@@ -26,7 +26,10 @@ document.body.appendChild(renderer.domElement);
 
 // helpers (visible even if textures fail)
 scene.add(new THREE.GridHelper(SIZE*1.4, 20, 0x555555, 0x333333));
-const cube = new THREE.Mesh(new THREE.BoxGeometry(40,40,40), new THREE.MeshStandardMaterial({color:0x0077cc}));
+const cube = new THREE.Mesh(
+    new THREE.BoxGeometry(40, 40, 40),
+    new THREE.MeshStandardMaterial({ color: 0x6B8E23 }) // olive drab — natural terrain color on white
+);
 cube.position.set(-SIZE*0.45, 20, -SIZE*0.45); scene.add(cube);
 
 // lights
