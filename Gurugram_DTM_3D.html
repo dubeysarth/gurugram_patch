@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>DSM 3D Viewer (Local Modules)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>html,body{margin:0;height:100%;overflow:hidden;background:#111}#info{position:absolute;top:8px;left:8px;color:#eee;font:13px system-ui}</style>
+  <style>html,body{margin:0;height:100%;overflow:hidden;background:#fff}#info{position:absolute;top:8px;left:8px;color:#111;font:13px system-ui}</style>
 </head>
 <body>
 <div id="info">Orbit: left-drag • Pan: right-drag • Zoom: wheel</div>
@@ -26,7 +26,7 @@ document.body.appendChild(renderer.domElement);
 
 // helpers (visible even if textures fail)
 scene.add(new THREE.GridHelper(SIZE*1.4, 20, 0x555555, 0x333333));
-const cube = new THREE.Mesh(new THREE.BoxGeometry(40,40,40), new THREE.MeshStandardMaterial({color:0x4488ff}));
+const cube = new THREE.Mesh(new THREE.BoxGeometry(40,40,40), new THREE.MeshStandardMaterial({color:0x0077cc}));
 cube.position.set(-SIZE*0.45, 20, -SIZE*0.45); scene.add(cube);
 
 // lights
