@@ -41,8 +41,8 @@ const loader = new THREE.TextureLoader();
 const load = (u, cs) => new Promise((res, rej) => loader.load(u, t => { t.colorSpace = cs; res(t); }, undefined, rej));
 
 Promise.all([
-  load('heightmap.png', THREE.LinearSRGBColorSpace),
-  load('hillshade.png', THREE.SRGBColorSpace)
+  load('heightmap_burn_in.png', THREE.LinearSRGBColorSpace),
+  load('hillshade_burn_in.png', THREE.SRGBColorSpace)
 ]).then(([heightmap, hillshade]) => {
   const geom = new THREE.PlaneGeometry(SIZE, SIZE, SEGMENTS, SEGMENTS);
   const mat  = new THREE.MeshStandardMaterial({
