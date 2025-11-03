@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>DSM 3D Viewer (Local Modules)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>html,body{margin:0;height:100%;overflow:hidden;background:#111}#info{position:absolute;top:8px;left:8px;color:#eee;font:13px system-ui}</style>
+</head>
+<body>
+<div id="info">Orbit: left-drag • Pan: right-drag • Zoom: wheel</div>
+<script type="module">
+import * as THREE from './three.module.js';
+import { OrbitControls } from './OrbitControls.js';
+
+const Z_EXAGGERATION = 120, SIZE = 1000, SEGMENTS = 256;
+
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x111111);
+const camera = new THREE.PerspectiveCamera(60, innerWidth/innerHeight, 0.5, 1e4);
+camera.position.set(0, 600, 900);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+// helpers (visible even if textures fail)
+scene.add(new THREE.GridHelper(SIZE*1.4, 20, 0x555555, 0x333333));
+const cube = new THREE.Mesh(new THREE.BoxGeometry(40,40,40), new THREE.MeshStandardMaterial({color:0x4488ff}));
+cube.position.set(-SIZE*0.45, 20, -SIZE*0.45); scene.add(cube);
+
+// lights
+const dl = new THREE.DirectionalLight(0xffffff,1); dl.position.set(600,800,400); scene.add(dl);
+scene.add(new THREE.AmbientLight(0xffffff,0.25));
+
+// controls
+const controls = new OrbitControls(camera, renderer.domElement); controls.enableDamping = true;
+
+// textures
+const loader = new THREE.TextureLoader();
+const load = (u, cs) => new Promise((res, rej) => loader.load(u, t => { t.colorSpace = cs; res(t); }, undefined, rej));
+
+Promise.all([
+  load('heightmap.png', THREE.LinearSRGBColorSpace),
+  load('hillshade.png', THREE.SRGBColorSpace)
+]).then(([heightmap, hillshade]) => {
+  const geom = new THREE.PlaneGeometry(SIZE, SIZE, SEGMENTS, SEGMENTS);
+  const mat  = new THREE.MeshStandardMaterial({
+    map: hillshade, displacementMap: heightmap, displacementScale: Z_EXAGGERATION,
+    metalness: 0, roughness: 1
+  });
+  const terrain = new THREE.Mesh(geom, mat);
+  terrain.rotation.x = -Math.PI/2; scene.add(terrain);
+  console.log('Terrain loaded');
+}).catch(e => console.error('Terrain load failed:', e));
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+(function loop(){ requestAnimationFrame(loop); controls.update(); renderer.render(scene, camera);}());
+</script>
+</body>
+</html>

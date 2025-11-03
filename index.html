@@ -119,6 +119,7 @@
       <button id="tab-dtm"   role="tab" aria-selected="true"  aria-controls="panel-dtm"   data-target="panel-dtm">Representative Terrain (DTM)</button>
       <button id="tab-dsm"   role="tab" aria-selected="false" aria-controls="panel-dsm"   data-target="panel-dsm">Representative Surface (DSM)</button>
       <button id="tab-burn"  role="tab" aria-selected="false" aria-controls="panel-burn"  data-target="panel-burn">Conditioning Terrain (DTM after Burn-in)</button>
+      <button id="tab-gurugram"  role="tab" aria-selected="false" aria-controls="panel-gurugram"  data-target="panel-gurugram">Gurugram Terrain</button>
     </div>
 
     <!-- Panels -->
@@ -135,6 +136,11 @@
     <section id="panel-burn" class="panel" role="tabpanel" aria-labelledby="tab-burn" hidden>
       <!-- Lazy-load -->
       <iframe data-src="./DTM_BURNIN_3D.html" title="Conditioning Terrain (DTM after Burn-in)"></iframe>
+    </section>
+
+    <section id="panel-gurugram" class="panel" role="tabpanel" aria-labelledby="tab-gurugram" hidden>
+      <!-- Lazy-load -->
+      <iframe data-src="./Gurugram_DTM_3D.html" title="Gurugram Terrain"></iframe>
     </section>
   </main>
 
@@ -192,8 +198,8 @@
         });
       });
 
-      // Hash routing: #dtm, #dsm, #burnin
-      const map = { dtm: 'tab-dtm', dsm: 'tab-dsm', burnin: 'tab-burn' };
+      // Hash routing: #dtm, #dsm, #burnin, #gurugram
+      const map = { dtm: 'tab-dtm', dsm: 'tab-dsm', burnin: 'tab-burn', gurugram: 'tab-gurugram' };
       const initial = location.hash.replace('#', '');
       if (map[initial]) {
         activate(map[initial]);
